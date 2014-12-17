@@ -40,6 +40,7 @@ namespace LOLSmite
 			frame = new Frame();
 			frame.OnFrame += OnLOLFrame;
 			Frame.OnMessage += AddLog;
+            this.checkBox1.Checked = true;
 		}
 		
 		

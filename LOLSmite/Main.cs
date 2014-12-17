@@ -32,7 +32,6 @@ namespace LOLSmite
 			Application.SetCompatibleTextRenderingDefault(false);
 			var form = new MainForm();
 			Application.Run(form);
-			AppDomain.Unload(AppDomain.CurrentDomain);
 			return 0;
 
 		}
@@ -41,7 +40,7 @@ namespace LOLSmite
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			var form = new MainForm();
+            var form = new MainForm();
 			Application.Run(form);
 
 		}
