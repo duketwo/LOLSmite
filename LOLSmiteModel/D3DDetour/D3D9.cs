@@ -88,7 +88,7 @@ namespace D3DDetour
 		}
 		public override void Remove()
 		{
-			// this.localHook.Dispose();
+            LOLSmiteModel.Memory.GetMagic.Detours["endscene"].Dispose();
 		}
 	}
 }
