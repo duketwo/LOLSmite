@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <ProjectGuid>{539C3764-4833-4632-9360-992C227F4E37}</ProjectGuid>
+    <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Library</OutputType>
+    <RootNamespace>LOLSmiteModel</RootNamespace>
+    <AssemblyName>LOLSmiteModel</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <NoWin32Manifest>False</NoWin32Manifest>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <SignAssembly>False</SignAssembly>
+    <DelaySign>False</DelaySign>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <NoStdLib>False</NoStdLib>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <BaseAddress>4194304</BaseAddress>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <FileAlignment>4096</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <Optimize>False</Optimize>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DebugSymbols>False</DebugSymbols>
+    <DebugType>None</DebugType>
+    <Optimize>True</Optimize>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="D3DDetour\D3D9Vtable.cs" />
+    <Compile Include="LOLClient.cs" />
+    <Compile Include="D3DDetour\D3D9.cs" />
+    <Compile Include="D3DDetour\D3DHook.cs" />
+    <Compile Include="D3DDetour\Pulse.cs" />
+    <Compile Include="Frame.cs" />
+    <Compile Include="LOLDetour\DetourFloatingText.cs" />
+    <Compile Include="LOLDevTools.cs" />
+    <Compile Include="LOLDetour\DetourCastSpell.cs" />
+    <Compile Include="LOLDetour\DetourMoveTo.cs" />
+    <Compile Include="LOLDetour\DetourPrintChat.cs" />
+    <Compile Include="LOLDetour\IHook.cs" />
+    <Compile Include="LOLDetour\LOLHookmanager.cs" />
+    <Compile Include="LOLItem.cs" />
+    <Compile Include="LOLMinion.cs" />
+    <Compile Include="LOLObject.cs" />
+    <Compile Include="LOLPlayer.cs" />
+    <Compile Include="LOLSpellInfo.cs" />
+    <Compile Include="LOLTurret.cs" />
+    <Compile Include="LOLWard.cs" />
+    <Compile Include="Mathf.cs" />
+    <Compile Include="Memory.cs" />
+    <Compile Include="Offsets.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StaticEnums.cs" />
+    <Compile Include="StructWrapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="D3DDetour" />
+    <Folder Include="LOLDetour" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WhiteMagic\WhiteMagic.csproj">
+      <Project>{5721FBA5-FE77-4727-8BFE-13CD23ECE36E}</Project>
+      <Name>WhiteMagic</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(TargetPath)" "$(SolutionDir)LOLSmiteInjector/bin/$(ConfigurationName)" /y /C
+</PostBuildEvent>
+  </PropertyGroup>
+</Project>
