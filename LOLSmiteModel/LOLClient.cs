@@ -48,7 +48,7 @@ namespace LOLSmiteModel
 		{
 			if(!startUp) {
 				startUp = true;
-				PrintToChat("<font color='#19D1CE'>LOLSmite loaded. by duketwo ( seviers@gmail.com )</font>");
+				//PrintToChat("<font color='#19D1CE'>LOLSmite loaded. by duketwo ( seviers@gmail.com )</font>");
 			}
 			
 			
@@ -83,24 +83,27 @@ namespace LOLSmiteModel
 		{
 			try
 			{
-				uint firstObj = *(uint*)(Memory.LOLBaseAddress + Offsets.ObjectManager);
-				uint lastObj =  *(uint*)(Memory.LOLBaseAddress + Offsets.ObjectManager+0x4);
+
+                uint firstObj = *(uint*)(Memory.LOLBaseAddress + Offsets.ObjectManager);
+                uint lastObj = *(uint*)(Memory.LOLBaseAddress + Offsets.ObjectManager + 0x4);
 				
 				while(firstObj < lastObj) {
-					
+
+                    
 					var obj =  new LOLObject(firstObj);
-					
-					switch(obj.ObjectType) {
-						case ObjectType.Player:
-							obj = new LOLPlayer(firstObj);
-							break;
-						case ObjectType.Minion:
-							obj = new LOLMinion(firstObj);
-							break;
-						case ObjectType.Ward:
-							obj = new LOLWard(firstObj);
-							break;
-					}
+
+                    switch (obj.ObjectType)
+                    {
+                        case ObjectType.Player:
+                            obj = new LOLPlayer(firstObj);
+                            break;
+                        case ObjectType.Minion:
+                            obj = new LOLMinion(firstObj);
+                            break;
+                        case ObjectType.Ward:
+                            obj = new LOLWard(firstObj);
+                            break;
+                    }
 					
 					if( obj.BaseAddress != Me.BaseAddress )
 						LOLObjectBag.Add(obj);

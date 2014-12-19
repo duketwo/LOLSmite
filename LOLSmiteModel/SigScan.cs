@@ -65,33 +65,63 @@ namespace LOLSmiteModel
             out int lpNumberOfBytesRead
             );
 
+        #region win32 imports
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool CloseHandle(IntPtr hHandle);
+
+        [DllImport("kernel32.dll")]
+        public static extern IntPtr OpenProcess(
+            ProcessAccessFlags processAccess,
+            bool bInheritHandle,
+            int processId
+        );
+
+        public enum ProcessAccessFlags : uint
+        {
+            All = 0x001F0FFF,
+            Terminate = 0x00000001,
+            CreateThread = 0x00000002,
+            VirtualMemoryOperation = 0x00000008,
+            VirtualMemoryRead = 0x00000010,
+            VirtualMemoryWrite = 0x00000020,
+            DuplicateHandle = 0x00000040,
+            CreateProcess = 0x000000080,
+            SetQuota = 0x00000100,
+            SetInformation = 0x00000200,
+            QueryInformation = 0x00000400,
+            QueryLimitedInformation = 0x00001000,
+            Synchronize = 0x00100000
+        }
+        #endregion
+
+
         /// <summary>
         /// m_vDumpedRegion
         /// 
         ///     The memory dumped from the external process.
         /// </summary>
-        private byte[] m_vDumpedRegion;
+        private static byte[] m_vDumpedRegion;
 
         /// <summary>
         /// m_vProcess
         /// 
         ///     The process we want to read the memory of.
         /// </summary>
-        private Process m_vProcess;
+        private static Process m_vProcess;
 
         /// <summary>
         /// m_vAddress
         /// 
         ///     The starting address we want to begin reading at.
         /// </summary>
-        private IntPtr m_vAddress;
+        private static IntPtr m_vAddress;
 
         /// <summary>
         /// m_vSize
         /// 
         ///     The number of bytes we wish to read from the process.
         /// </summary>
-        private Int32 m_vSize;
+        private static long m_vSize;
 
 
         #region "sigScan Class Construction"
@@ -104,10 +134,10 @@ namespace LOLSmiteModel
         /// </summary>
         public SigScan()
         {
-            this.m_vProcess = null;
-            this.m_vAddress = IntPtr.Zero;
-            this.m_vSize = 0;
-            this.m_vDumpedRegion = null;
+            m_vProcess = null;
+            m_vAddress = IntPtr.Zero;
+            m_vSize = 0;
+            m_vDumpedRegion = null;
         }
         /// <summary>
         /// SigScan
@@ -118,11 +148,11 @@ namespace LOLSmiteModel
         /// <param name="proc">The process to dump the memory from.</param>
         /// <param name="addr">The started address to begin the dump.</param>
         /// <param name="size">The size of the dump.</param>
-        public SigScan(Process proc, IntPtr addr, int size)
+        public SigScan(Process proc, IntPtr addr, long size)
         {
-            this.m_vProcess = proc;
-            this.m_vAddress = addr;
-            this.m_vSize = size;
+            m_vProcess = proc;
+            m_vAddress = addr;
+            m_vSize = size;
         }
         #endregion
 
@@ -139,29 +169,37 @@ namespace LOLSmiteModel
             try
             {
                 // Checks to ensure we have valid data.
-                if (this.m_vProcess == null)
+                if (m_vProcess == null)
                     return false;
-                if (this.m_vProcess.HasExited == true)
+                if (m_vProcess.HasExited == true)
                     return false;
-                if (this.m_vAddress == IntPtr.Zero)
+                if (m_vAddress == IntPtr.Zero)
                     return false;
-                if (this.m_vSize == 0)
+                if (m_vSize == 0)
                     return false;
 
                 // Create the region space to dump into.
-                this.m_vDumpedRegion = new byte[this.m_vSize];
+                m_vDumpedRegion = new byte[m_vSize];
+
+                //Frame.Log("Size: " + m_vSize);
 
                 bool bReturn = false;
                 int nBytesRead = 0;
 
+                IntPtr hProc = OpenProcess(ProcessAccessFlags.All, false, m_vProcess.Id);
+
                 // Dump the memory.
                 bReturn = ReadProcessMemory(
-                    this.m_vProcess.Handle, this.m_vAddress, this.m_vDumpedRegion, this.m_vSize, out nBytesRead
+                    hProc, m_vAddress, m_vDumpedRegion, (int)m_vSize, out nBytesRead
                     );
 
+                //Frame.Log("nBytesRead: " + nBytesRead);
+
                 // Validation checks.
-                if (bReturn == false || nBytesRead != this.m_vSize)
+                if (bReturn == false || nBytesRead != m_vSize)
                     return false;
+
+                //Frame.Log("Validated.");
                 return true;
             }
             catch (Exception ex)
@@ -181,24 +219,61 @@ namespace LOLSmiteModel
         /// <param name="btPattern">Pattern to scan for.</param>
         /// <param name="strMask">Mask to compare against.</param>
         /// <returns>Boolean depending on if the pattern was found.</returns>
-        private bool MaskCheck(int nOffset, byte[] btPattern, string strMask)
+        private bool MaskCheck(long nOffset, byte[] btPattern, string strMask)
         {
             // Loop the pattern and compare to the mask and dump.
-            for (int x = 0; x < btPattern.Length; x++)
-            {
-                // If the mask char is a wildcard, just continue.
-                if (strMask[x] == '?')
-                    continue;
 
-                // If the mask char is not a wildcard, ensure a match is made in the pattern.
-                if ((strMask[x] == 'x') && (btPattern[x] != this.m_vDumpedRegion[nOffset + x]))
-                    return false;
+            try
+            {
+
+                for (int x = 0; x < btPattern.Length; x++)
+                {
+                    // If the mask char is a wildcard, just continue.
+                    if (strMask[x] == '?')
+                        continue;
+
+
+                    if (m_vDumpedRegion.Length <= nOffset - x)
+                        return false;
+                    // If the mask char is not a wildcard, ensure a match is made in the pattern.
+                    if ((strMask[x] == 'x') && (btPattern[x] != m_vDumpedRegion[nOffset + x]))
+                        return false;
+                }
+
+                // The loop was successful so we found the pattern.
+                return true;
+
+
+            }
+            catch (Exception)
+            {
+
+                Frame.Log("MaskCheck exception.");
             }
 
-            // The loop was successful so we found the pattern.
-            return true;
+            return false;
         }
         #endregion
+
+
+
+        private byte[] ParseSig(string s)
+        {
+            try
+            {
+                s = s.Substring(1);
+                s = s.Replace("x", "0x");
+                byte[] data = s.Split('\\').Select(b => Convert.ToByte(b, 16)).ToArray();
+                return data;
+
+            }
+            catch (Exception e)
+            {
+                
+                Frame.Log("ParseSig exception.");
+            }
+            return new byte[] { };
+        }
 
         #region "sigScan Class Public Methods"
         /// <summary>
@@ -212,38 +287,47 @@ namespace LOLSmiteModel
         /// <param name="strMask">The mask string to compare against.</param>
         /// <param name="nOffset">The offset added to the result address.</param>
         /// <returns>IntPtr - zero if not found, address if found.</returns>
-        public IntPtr FindPattern(byte[] btPattern, string strMask, int nOffset)
+        public IntPtr FindPattern(string sig, string strMask, int nOffset)
         {
             try
             {
+
+               // Frame.Log("Sig: " + sig);
+
+                // parse the sig to byte array
+                byte[] btPattern = ParseSig(sig);
+
                 // Dump the memory region if we have not dumped it yet.
-                if (this.m_vDumpedRegion == null || this.m_vDumpedRegion.Length == 0)
+                if (m_vDumpedRegion == null || m_vDumpedRegion.Length == 0)
                 {
-                    if (!this.DumpMemory())
+                    if (!DumpMemory()) {
+                        Frame.Log("Memory dump failed.");
                         return IntPtr.Zero;
                 }
-
-                // Ensure the mask and pattern lengths match.
-                if (strMask.Length != btPattern.Length)
-                    return IntPtr.Zero;
-
-                // Loop the region and look for the pattern.
-                for (int x = 0; x < this.m_vDumpedRegion.Length; x++)
-                {
-                    if (this.MaskCheck(x, btPattern, strMask))
-                    {
-                        // The pattern was found, return it.
-                        return new IntPtr((int)this.m_vAddress + (x + nOffset));
-                    }
                 }
 
-                // Pattern was not found.
-                return IntPtr.Zero;
+                 // Ensure the mask and pattern lengths match.
+                 if (strMask.Length != btPattern.Length)
+                     return IntPtr.Zero;
+
+                 // Loop the region and look for the pattern. 
+                 for (long x = 0; x < m_vDumpedRegion.Length; x++)
+                 {
+                     if (MaskCheck(x, btPattern, strMask))
+                     {
+                         // The pattern was found, return it.
+                         return new IntPtr((int)m_vAddress + (x + nOffset));
+                     }
+                 }
+
+                 // Pattern was not found. 
+                 return IntPtr.Zero;
             }
             catch (Exception ex)
             {
-                return IntPtr.Zero;
+                Frame.Log("FindPattern exception.");
             }
+            return IntPtr.Zero;
         }
 
         /// <summary>
@@ -254,25 +338,25 @@ namespace LOLSmiteModel
         /// </summary>
         public void ResetRegion()
         {
-            this.m_vDumpedRegion = null;
+            m_vDumpedRegion = null;
         }
         #endregion
 
         #region "sigScan Class Properties"
         public Process Process
         {
-            get { return this.m_vProcess; }
-            set { this.m_vProcess = value; }
+            get { return m_vProcess; }
+            set { m_vProcess = value; }
         }
         public IntPtr Address
         {
-            get { return this.m_vAddress; }
-            set { this.m_vAddress = value; }
+            get { return m_vAddress; }
+            set { m_vAddress = value; }
         }
-        public Int32 Size
+        public long Size
         {
-            get { return this.m_vSize; }
-            set { this.m_vSize = value; }
+            get { return m_vSize; }
+            set { m_vSize = value; }
         }
         #endregion
 

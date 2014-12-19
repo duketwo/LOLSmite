@@ -17,11 +17,17 @@ namespace LOLSmiteModel
 	public class Offsets
 	{
 		// LOL
-		
-		public static uint ObjectManager { get { return 0x2FF9D84; } } // 4.21
-		public static uint LocalPlayer { get { return 0x1500D88; } } // 4.21
-		public static uint HudManager { get { return 0x1501294; } } // 4.21
-		public static uint GameClock { get { return 0x30170A4 ; } } // 4.21
+
+        public static uint ObjectManager { get { return 0x2FBDE34; } } // 4.22
+        public static uint LocalPlayer { get { return 0x14C6290; } } // 4.22
+        public static uint HudManager { get { return 0x14C6060; } } // 4.22
+        public static uint GameClock { get { return 0x2FDB158; } } // 4.22
+
+
+        //public static uint ObjectManager { get { return 0x2FF9D84; } } // 4.21
+        //public static uint LocalPlayer { get { return 0x1500D88; } } // 4.21
+        //public static uint HudManager { get { return 0x1501294; } } // 4.21
+        //public static uint GameClock { get { return 0x30170A4; } } // 4.21
 		
 		// LOLObj
 		
@@ -50,12 +56,19 @@ namespace LOLSmiteModel
 		
 		
 		// Functions
-		
-		public static uint FloatingText { get { return 0x883F00 ; } } // 4.21
-		public static uint PrintChat { get { return 0xA8E320 ; } }    // 4.21
-		public static uint CastSpell { get { return 0x6EEA50 ; } }    // 4.21
-		public static uint MoveTo { get { return 0x4A60A0 ; } }    // 4.21
-		public static uint ViewPort { get { return 0x65F060 ; } }    // 4.21
+
+        public static uint FloatingText { get { return 0x883F00; } } // 4.22?
+        public static uint PrintChat { get { return 0x287800; } }    // 4.22
+        public static uint CastSpell { get { return 0x7DBDB0; } }    // 4.22
+        public static uint MoveTo { get { return 0x49F300; } }    // 4.22
+        public static uint ViewPort { get { return 0x4A64B0; } }    // 4.22
+
+
+        //public static uint FloatingText { get { return 0x883F00; } } // 4.21
+        //public static uint PrintChat { get { return 0xA8E320; } }    // 4.21 
+        //public static uint CastSpell { get { return 0x6EEA50; } }    // 4.21
+        //public static uint MoveTo { get { return 0x4A60A0; } }    // 4.21
+        //public static uint ViewPort { get { return 0x65F060; } }    // 4.21
 		
 		
 		// SpellInfo

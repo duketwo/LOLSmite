@@ -33,23 +33,23 @@ namespace LOLSmiteModel
 				this.BaseAddress = baseAddress;
 			}
 			
-			// update d3ddrawstring with current coordinates if exists
-			if(LOLClient.D3dDrawStringList.ContainsKey(this.NetworkId)){
+			 // update d3ddrawstring with current coordinates if exists
+            if(LOLClient.D3dDrawStringList.ContainsKey(this.NetworkId)){
 				
-				D3DDrawString d3ds;
-				if(LOLClient.D3dDrawStringList.TryGetValue(this.NetworkId,out d3ds)) {
-					if(LOLClient.D3dDrawStringList.TryRemove(this.NetworkId, out d3ds)){
-						d3ds.X = (int)ViewPort.X;
-						d3ds.Y = (int)ViewPort.Z;
-						LOLClient.D3dDrawStringList.TryAdd(this.NetworkId,d3ds);
+                D3DDrawString d3ds;
+                if(LOLClient.D3dDrawStringList.TryGetValue(this.NetworkId,out d3ds)) {
+                    if(LOLClient.D3dDrawStringList.TryRemove(this.NetworkId, out d3ds)){
+                        d3ds.X = (int)ViewPort.X;
+                        d3ds.Y = (int)ViewPort.Z;
+                        LOLClient.D3dDrawStringList.TryAdd(this.NetworkId,d3ds);
 						
-					}
-				}
+                    }
+                }
 				
-				if(this.IsDead)
-					if(LOLClient.D3dDrawStringList.TryRemove(this.NetworkId, out d3ds));
+                if(this.IsDead)
+                    if(LOLClient.D3dDrawStringList.TryRemove(this.NetworkId, out d3ds));
 				
-			}
+            }
 			
 		}
 		
@@ -133,9 +133,10 @@ namespace LOLSmiteModel
 		{
 			get
 			{
-				if(this.Name.Equals("SightWard") || this.Name.Equals("VisionWard")) {
-					return ObjectType.Ward;
-				}
+                if (this.Name.Equals("SightWard") || this.Name.Equals("VisionWard"))
+                {
+                    return ObjectType.Ward;
+                }
 				return (ObjectType)Enum.ToObject(typeof(ObjectType), *(int*)(BaseAddress + Offsets.Type));
 			}
 		}

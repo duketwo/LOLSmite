@@ -25,7 +25,8 @@ namespace LOLSmite
 		/// Program entry point.
 		/// </summary>
 		/// 
-		
+
+        [STAThread]
 		private static int EntryPoint(string args)
 		{
 			Application.EnableVisualStyles();

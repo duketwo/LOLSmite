@@ -22,7 +22,7 @@ namespace LOLSmiteModel
 	{
 		
 		
-		private const string ExeName = "League Of Legends";
+		private const string EXENAME = "League Of Legends";
 		private static Magic magic;
 		
 		public static Magic GetMagic {
@@ -32,8 +32,38 @@ namespace LOLSmiteModel
 				return magic;
 			}
 		}
-		
-		public static T ReadStruct<T>(uint Address) where T: struct
+
+        #region win32 imports
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool CloseHandle(IntPtr hHandle);
+
+        [DllImport("kernel32.dll")]
+        public static extern IntPtr OpenProcess(
+            ProcessAccessFlags processAccess,
+            bool bInheritHandle,
+            int processId
+        );
+
+        public enum ProcessAccessFlags : uint
+        {
+            All = 0x001F0FFF,
+            Terminate = 0x00000001,
+            CreateThread = 0x00000002,
+            VirtualMemoryOperation = 0x00000008,
+            VirtualMemoryRead = 0x00000010,
+            VirtualMemoryWrite = 0x00000020,
+            DuplicateHandle = 0x00000040,
+            CreateProcess = 0x000000080,
+            SetQuota = 0x00000100,
+            SetInformation = 0x00000200,
+            QueryInformation = 0x00000400,
+            QueryLimitedInformation = 0x00001000,
+            Synchronize = 0x00100000
+        }
+        #endregion
+
+
+        public static T ReadStruct<T>(uint Address) where T: struct
 		{
 			try
 			{
@@ -45,6 +75,15 @@ namespace LOLSmiteModel
 				return default(T);
 			}
 		}
+
+        public static T Read<T>(uint address) where T : struct
+        {
+            return GetMagic.Read<T>(address);
+        }
+
+        public static byte[] ReadBytes(uint address, int c) {
+            return GetMagic.ReadBytes(address, c);
+        }
 		
 		public unsafe static string ReadString(uint address, Encoding encoding, uint maxLength = 512)
 		{
@@ -106,15 +145,34 @@ namespace LOLSmiteModel
 		private static uint GetLOLBaseAddress()
 		{
 			uint result = 0u;
-			foreach (ProcessModule processModule in Process.GetProcessesByName(ExeName)[0].Modules)
+			foreach (ProcessModule processModule in Process.GetProcessesByName(EXENAME)[0].Modules)
 			{
-				if (processModule.ModuleName.ToLower().Equals((ExeName + ".exe").ToLower()))
+				if (processModule.ModuleName.ToLower().Equals((EXENAME + ".exe").ToLower()))
 				{
 					result = uint.Parse(processModule.BaseAddress.ToString());
 				}
 			}
 			return result;
 		}
+
+        public static IntPtr GetLOLOpenProcessHandle
+        {
+            get
+            {
+                return OpenProcess(ProcessAccessFlags.All, false, Process.GetProcessesByName(EXENAME)[0].Id);
+            }
+        }
+
+        public static IntPtr ScanSignature(string sig, string mask, int offset)
+        {
+            SigScan sigScan = new SigScan(Process.GetProcessesByName(EXENAME)[0], new IntPtr(LOLBaseAddress), Process.GetProcessesByName(EXENAME)[0].MainModule.ModuleMemorySize);
+            IntPtr sigPtr = sigScan.FindPattern(sig, mask, offset);
+            return sigPtr;
+
+        }
+
+
+
 		
 		private static uint _LOLBaseAddress;
 		public static uint LOLBaseAddress{
@@ -127,7 +185,7 @@ namespace LOLSmiteModel
 
 		
 		public static Process GetLOLProc() {
-			return FindProcess(ExeName);
+			return FindProcess(EXENAME);
 		}
 		
 		

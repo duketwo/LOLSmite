@@ -67,16 +67,21 @@ namespace LOLSmiteModel
 		
 		public unsafe void Cast(Vector3 vec)
 		{
-			var castSpell = (DetourCastSpell.CastSpell)Marshal.GetDelegateForFunctionPointer(new IntPtr(Memory.LOLBaseAddress+Offsets.CastSpell), typeof(DetourCastSpell.CastSpell));
-			*(uint*)(Frame.Client.Me.Champion_SCIPointer + Offsets.SpellSlot) = this.SpellSlot;
-			castSpell(Frame.Client.Me.Champion_SCIPointer, (uint)&vec, (uint)&vec, 0x0, 0x0);
+            if (this.IsReady)
+            {
+                var castSpell = (DetourCastSpell.CastSpell)Marshal.GetDelegateForFunctionPointer(new IntPtr(Memory.LOLBaseAddress + Offsets.CastSpell), typeof(DetourCastSpell.CastSpell));
+                *(uint*)(Frame.Client.Me.Champion_SCIPointer + Offsets.SpellSlot) = this.SpellSlot;
+                castSpell(Frame.Client.Me.Champion_SCIPointer, (uint)&vec, (uint)&vec, 0x0, 0x0);
+            }
 		}
 		
 		public unsafe void Cast(LOLObject obj){
-			
-			var castSpell = (DetourCastSpell.CastSpell)Marshal.GetDelegateForFunctionPointer(new IntPtr(Memory.LOLBaseAddress+Offsets.CastSpell), typeof(DetourCastSpell.CastSpell));
-			*(uint*)(Frame.Client.Me.Champion_SCIPointer + Offsets.SpellSlot) = this.SpellSlot;
-			castSpell(Frame.Client.Me.Champion_SCIPointer, obj.BaseAddress+Offsets.Position, obj.BaseAddress+Offsets.Position, (uint)obj.NetworkId, 0x0);
+            if (this.IsReady)
+            {
+                var castSpell = (DetourCastSpell.CastSpell)Marshal.GetDelegateForFunctionPointer(new IntPtr(Memory.LOLBaseAddress + Offsets.CastSpell), typeof(DetourCastSpell.CastSpell));
+                *(uint*)(Frame.Client.Me.Champion_SCIPointer + Offsets.SpellSlot) = this.SpellSlot;
+                castSpell(Frame.Client.Me.Champion_SCIPointer, obj.BaseAddress + Offsets.Position, obj.BaseAddress + Offsets.Position, (uint)obj.NetworkId, 0x0);
+            }
 		}
 		
 		

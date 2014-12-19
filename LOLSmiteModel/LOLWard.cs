@@ -17,16 +17,19 @@ namespace LOLSmiteModel
 	{
 		public LOLWard(uint baseAddress, bool rebased = false) : base(baseAddress, rebased)
 		{
-			
-			float remainingTime = this.RemainingTime;
-			if(remainingTime > 0){
-				this.SetD3dDrawString("T: " + RemainingTime);
-			} else {
-				this.RemoveD3dDrawString();
-			}
-			
-			if(this.IsDead || remainingTime <= 0)
-				this.RemoveD3dDrawString();
+
+            float remainingTime = this.RemainingTime;
+            if (remainingTime > 0)
+            {
+                this.SetD3dDrawString("T: " + RemainingTime);
+            }
+            else
+            {
+                this.RemoveD3dDrawString();
+            }
+
+            if (this.IsDead || remainingTime <= 0)
+                this.RemoveD3dDrawString();
 		}
 		
 		

@@ -24,14 +24,22 @@ namespace LOLSmiteModel
 		{
 			
 			try {
-				string cooldowns = SpellQ.IsReady ? "0" : "X";
-				cooldowns += SpellW.IsReady ? "0" : "X";
-				cooldowns += SpellE.IsReady ? "0" : "X";
-				cooldowns += SpellR.IsReady ? "0" : "X";
-				cooldowns += " ";
-				cooldowns += Summoner1.IsReady ? "0" : "X";
-				cooldowns += Summoner2.IsReady ? "0" : "X";
-				this.SetD3dDrawString(cooldowns);
+
+                if (!IsDead)
+                {
+                    string cooldowns = SpellQ.IsReady ? "0" : "X";
+                    cooldowns += SpellW.IsReady ? "0" : "X";
+                    cooldowns += SpellE.IsReady ? "0" : "X";
+                    cooldowns += SpellR.IsReady ? "0" : "X";
+                    cooldowns += " ";
+                    cooldowns += Summoner1.IsReady ? "0" : "X";
+                    cooldowns += Summoner2.IsReady ? "0" : "X";
+                    this.SetD3dDrawString(cooldowns);
+                }
+                else
+                {
+                    this.RemoveD3dDrawString();
+                }
 				
 			} catch (Exception ex) {
 				
