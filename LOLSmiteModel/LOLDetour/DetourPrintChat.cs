@@ -33,9 +33,6 @@ namespace LOLSmiteModel
 		
 		public DetourPrintChat()
 		{
-			
-			
-				
 				try {
 					
 					IntPtr printChatPointer = new IntPtr(Memory.LOLBaseAddress+Offsets.PrintChat);

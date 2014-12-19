@@ -316,10 +316,13 @@ namespace LOLSmiteInjector
 			// get the pointer of the LoadLibraryW function
 			IntPtr fnLoadLib = GetProcAddress(GetModuleHandle("Kernel32"),"LoadLibraryW");
 			
+			// LoadLibraryW the bootstrap.dll
 			uint InjectBootstrap = InjectModule(hProc,fnLoadLib,lolBootstrapDllPath);
 			
-			// add the function offset to the base of the module in the remote process
+			// get the pointer to the bootstrap.dll
 			uint BootstrapBase = GetRemoteModuleHandle(pid, LOLBOOTSTRAP_DLLNAME);
+			
+			// add the function offset to the base of the module in the remote process
 			uint offset = GetFunctionOffset(LOLBOOTSTRAP_DLLNAME,"ImplantDotNetAssembly");
 			uint fnImplantDotNetAssembly = BootstrapBase + offset;
 			
@@ -330,10 +333,10 @@ namespace LOLSmiteInjector
 			uint InjectManagedAssembly = InjectModule(hProc,(IntPtr)fnImplantDotNetAssembly,args);
 			
 			// get the pointer of the FreeLibrary function
-			IntPtr fnFreeLib = GetProcAddress(GetModuleHandle("Kernel32"),"FreeLibrary");
+			// IntPtr fnFreeLib = GetProcAddress(GetModuleHandle("Kernel32"),"FreeLibrary");
 			
 			//  unload bootstrap out of the remote process
-			IntPtr hThread = CreateRemoteThread(hProc,IntPtr.Zero,IntPtr.Zero,fnFreeLib,(IntPtr)BootstrapBase,0,IntPtr.Zero);
+			//IntPtr hThread = CreateRemoteThread(hProc,IntPtr.Zero,IntPtr.Zero,fnFreeLib,(IntPtr)BootstrapBase,0,IntPtr.Zero);
 			
 			// close the handle
 			CloseHandle(hProc);
@@ -473,7 +476,7 @@ namespace LOLSmiteInjector
 						return (uint)p.modBaseAddr;
 				}
 			}
-			return 0x0;
+			return 0;
 		}
 		
 		

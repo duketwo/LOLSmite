@@ -38,6 +38,7 @@ namespace LOLSmiteModel
 					break;
 			}
 		}
+		
 		~StructWrapper() {
 			if (Ptr != default(uint)) {
 				Marshal.FreeHGlobal(new IntPtr(Ptr));

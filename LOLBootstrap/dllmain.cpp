@@ -96,6 +96,22 @@ __declspec(dllexport) HRESULT ImplantDotNetAssembly(_In_ LPCTSTR lpCommand)
     return hr;
 }
 
+
+extern "C"
+{
+  void __declspec(dllexport) __declspec(naked) InvokeFastcall()
+  {
+    __asm
+    {
+      pop edx
+      XCHG DWORD PTR SS:[ESP+8],EDX
+      pop eax
+      pop ecx
+      jmp eax
+    }
+  }
+}
+
 // Entrypoint
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
 {

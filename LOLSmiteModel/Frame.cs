@@ -31,6 +31,7 @@ namespace LOLSmiteModel
 		protected static readonly object _frameLock = new object();
 		public LOLHookManager hookManager;
 		
+		
 		public Frame()
 		{
 			
@@ -39,7 +40,8 @@ namespace LOLSmiteModel
 			
 			
 			hookManager = new LOLHookManager();
-			hookManager.AddController(new DetourCastSpell());
+			//hookManager.AddController(new DetourCastSpell());
+			//hookManager.AddController(new DetourViewPort());
 			//hookManager.AddController(new DetourFloatingText());
 			
 		}
@@ -62,7 +64,7 @@ namespace LOLSmiteModel
 						Client = _client;
 						if (OnFrame != null)
 							OnFrame(this, new EventArgs());
-						Client = null;
+						//Client = null;
 						
 					}
 				}

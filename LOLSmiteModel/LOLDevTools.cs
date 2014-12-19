@@ -7,6 +7,7 @@
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
+using System.Linq;
 
 namespace LOLSmiteModel
 {
@@ -79,6 +80,64 @@ namespace LOLSmiteModel
 			Frame.Log("Frame.Client.Me.SmiteSummoner.BaseAddress.ToString(X): " + Frame.Client.Me.SmiteSummoner.BaseAddress.ToString("X"));
 			
 			Frame.Log("Frame.Client.Me.SmiteSummoner.TimeStamp.ToString(): " + Frame.Client.Me.SmiteSummoner.TimeStamp.ToString());
+			
+			Frame.Log("(LOLSmiteModel.Memory.LOLBaseAddress+Offsets.HudManager).ToString(X): " + (*(uint*)(LOLSmiteModel.Memory.LOLBaseAddress+Offsets.HudManager)).ToString("X"));
+			
+			Frame.Log("(*(uint*)(*(uint*)(LOLSmiteModel.Memory.LOLBaseAddress+Offsets.HudManager))).ToString(X): " + ( ((*(uint*)(*(uint*)(LOLSmiteModel.Memory.LOLBaseAddress+Offsets.HudManager)))) ).ToString("X"));
+			
+			
+			Frame.Log("Frame.Client.ScreenCenterPosition.X: " + Frame.Client.ScreenCenterPositionWorld.X);
+			Frame.Log("Frame.Client.ScreenCenterPosition.Y: " + Frame.Client.ScreenCenterPositionWorld.Y);
+			
+			
+			Frame.Log("Frame.Client.Me.Position.X: " + Frame.Client.Me.Position.X);
+			Frame.Log("Frame.Client.Me.Position.Y: " + Frame.Client.Me.Position.Y);
+			Frame.Log("Frame.Client.Me.Position.Z: " + Frame.Client.Me.Position.Z);
+			
+			
+			Frame.Log("Frame.Client.Me.Position.Subtract(Frame.Client.ScreenCenterPosition).X: " + Frame.Client.Me.Position.Subtract(Frame.Client.ScreenCenterPositionWorld).X);
+			Frame.Log("Frame.Client.Me.Position.Subtract(Frame.Client.ScreenCenterPosition).Y: " + Frame.Client.Me.Position.Subtract(Frame.Client.ScreenCenterPositionWorld).Y);
+			
+			
+			Frame.Log("Frame.Client.Me.GetViewPort().X " + Frame.Client.Me.ViewPort.X);
+			Frame.Log("Frame.Client.Me.GetViewPort().Y " + Frame.Client.Me.ViewPort.Y);
+			Frame.Log("Frame.Client.Me.GetViewPort().Z " + Frame.Client.Me.ViewPort.Z);
+			
+			
+			Frame.Log("Frame.Client.Me.SpellQ.TimeStamp.ToString(): " + Frame.Client.Me.SpellQ.TimeStamp.ToString());
+			
+			Frame.Log("(*(uint*)(LOLSmiteModel.Memory.LOLBaseAddress+Offsets.GameClock)).ToString(X): " + (*(uint*)(LOLSmiteModel.Memory.LOLBaseAddress+Offsets.GameClock)).ToString("X") );
+			
+			Frame.Log("Gameclock: " + ( *(float*) ((*(uint*)(LOLSmiteModel.Memory.LOLBaseAddress+Offsets.GameClock))+0x2C)) );
+			Frame.Log("Frame.Client.Me.Summoner2.TimeStamp: " +  Frame.Client.Me.Summoner2.TimeStamp );
+			Frame.Log("Frame.Client.Me.Summoner2.IsReady: " +  Frame.Client.Me.Summoner2.IsReady );
+			Frame.Log("Frame.Client.Me.Summoner2.TimeUntilReady: " +  Frame.Client.Me.Summoner2.TimeUntilReady );
+			
+			
+			foreach(LOLWard obj in Frame.Client.GetLOLObjects.Where(s => s.ObjectType == ObjectType.Ward)){
+				Frame.Log("Remaining Ward Time: " + obj.RemainingTime);
+			}
+			
+			
+			foreach(LOLPlayer obj in Frame.Client.GetLOLObjects.Where( s => s.ObjectType == ObjectType.Player)) {
+				Frame.Log("Player: " + obj.Name);
+			}
+			
+			
+			Frame.Log("Frame.Client.Me.SpellQ.IsReady: " + Frame.Client.Me.SpellQ.IsReady);
+			Frame.Log("Frame.Client.Me.SpellW.IsReady: " + Frame.Client.Me.SpellW.IsReady);
+			Frame.Log("Frame.Client.Me.SpellE.IsReady: " + Frame.Client.Me.SpellE.IsReady);
+			Frame.Log("Frame.Client.Me.SpellR.IsReady: " + Frame.Client.Me.SpellR.IsReady);
+			
+			Frame.Log("Frame.Client.Me.Summoner1.IsReady: " + Frame.Client.Me.Summoner1.IsReady);
+			Frame.Log("Frame.Client.Me.Summoner2.IsReady: " + Frame.Client.Me.Summoner2.IsReady);
+			
+			
+			Frame.Log("Frame.Client.Me.Summoner2.IsReady: " + Frame.Client.Me.Summoner1.BaseAddress.ToString("X"));
+			
+			
+			
 		}
 	}
 }
+

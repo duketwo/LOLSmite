@@ -9,6 +9,7 @@
 using System;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace LOLSmiteModel
 {
@@ -34,7 +35,9 @@ namespace LOLSmiteModel
 		
 		public unsafe string Name {
 			get {
-				return Memory.ReadString( *(uint*)(BaseAddress+Offsets.SpellName)+0x18,Encoding.UTF8);
+				//return Memory.ReadString( *(uint*)(BaseAddress+Offsets.SpellName)+0x18,Encoding.UTF8,5);
+				return Encoding.UTF8.GetString(Memory.GetMagic.ReadBytes(*(uint*)(BaseAddress+Offsets.SpellName)+0x18,35));
+			
 			}
 		}
 		
@@ -48,16 +51,25 @@ namespace LOLSmiteModel
 			get { return *(float*)(BaseAddress+Offsets.TimeStamp); }
 		}
 		
+		public bool IsReady {
+			get {
+				return (this.TimeStamp-Frame.Client.GameClockTime) <= 0;
+			}
+		}
+		
+		public float TimeUntilReady {
+			get {
+				
+				return this.TimeStamp-Frame.Client.GameClockTime;
+			}
+		}
+		
 		
 		public unsafe void Cast(Vector3 vec)
 		{
 			var castSpell = (DetourCastSpell.CastSpell)Marshal.GetDelegateForFunctionPointer(new IntPtr(Memory.LOLBaseAddress+Offsets.CastSpell), typeof(DetourCastSpell.CastSpell));
-			using (var s = new StructWrapper<Vector3>(vec))
-			{
-				*(uint*)(Frame.Client.Me.Champion_SCIPointer + Offsets.SpellSlot) = this.SpellSlot;
-				castSpell(Frame.Client.Me.Champion_SCIPointer, s.Ptr, s.Ptr, 0x0, 0x0);
-			}
-			
+			*(uint*)(Frame.Client.Me.Champion_SCIPointer + Offsets.SpellSlot) = this.SpellSlot;
+			castSpell(Frame.Client.Me.Champion_SCIPointer, (uint)&vec, (uint)&vec, 0x0, 0x0);
 		}
 		
 		public unsafe void Cast(LOLObject obj){
@@ -65,7 +77,6 @@ namespace LOLSmiteModel
 			var castSpell = (DetourCastSpell.CastSpell)Marshal.GetDelegateForFunctionPointer(new IntPtr(Memory.LOLBaseAddress+Offsets.CastSpell), typeof(DetourCastSpell.CastSpell));
 			*(uint*)(Frame.Client.Me.Champion_SCIPointer + Offsets.SpellSlot) = this.SpellSlot;
 			castSpell(Frame.Client.Me.Champion_SCIPointer, obj.BaseAddress+Offsets.Position, obj.BaseAddress+Offsets.Position, (uint)obj.NetworkId, 0x0);
-			
 		}
 		
 		

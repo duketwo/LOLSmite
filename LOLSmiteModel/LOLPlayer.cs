@@ -22,6 +22,24 @@ namespace LOLSmiteModel
 		
 		public LOLPlayer(uint baseAddress, bool rebased = false) : base(baseAddress, rebased)
 		{
+			
+			try {
+				string cooldowns = SpellQ.IsReady ? "0" : "X";
+				cooldowns += SpellW.IsReady ? "0" : "X";
+				cooldowns += SpellE.IsReady ? "0" : "X";
+				cooldowns += SpellR.IsReady ? "0" : "X";
+				cooldowns += " ";
+				cooldowns += Summoner1.IsReady ? "0" : "X";
+				cooldowns += Summoner2.IsReady ? "0" : "X";
+				this.SetD3dDrawString(cooldowns);
+				
+			} catch (Exception ex) {
+				
+				Frame.Log(ex.ToString());
+			}
+			
+			
+			
 		}
 		
 		public unsafe uint Champion_SCIPointer
@@ -90,6 +108,8 @@ namespace LOLSmiteModel
 			}
 		}
 		
+
+		
 		
 		public void SmiteBuffs(){
 			
@@ -105,9 +125,10 @@ namespace LOLSmiteModel
 			                                                                             s.Distance < 760 && s.Health < smiteDamage && !s.IsDead);
 
 			if(buff != null) {
-				if(HasSmiteSummoner)
+				if(HasSmiteSummoner && !Frame.Client.Me.IsDead) {
 					SmiteSummoner.Cast(buff);
-				Frame.Log("Smite casted!");
+					Frame.Log("Smite casted!");
+				}
 			}
 		}
 		

@@ -18,3 +18,5 @@ namespace LOLSmiteModel
 		void Dispose();		
 	}
 }
+
+

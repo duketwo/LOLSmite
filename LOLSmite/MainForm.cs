@@ -40,7 +40,7 @@ namespace LOLSmite
 			frame = new Frame();
 			frame.OnFrame += OnLOLFrame;
 			Frame.OnMessage += AddLog;
-            this.checkBox1.Checked = true;
+			this.checkBox1.Checked = true;
 		}
 		
 		
@@ -56,14 +56,14 @@ namespace LOLSmite
 				hook = true;
 				AddLog("Hooked D3D Endscene.");
 				
+		
+				
 			}
-			
 			
 			
 			if(button1clicked) {
 				
 				button1clicked = false;
-				Frame.Client.DrawFloatingText(Frame.Client.Me,"test",counter);
 				counter++;
 			}
 			
@@ -75,7 +75,6 @@ namespace LOLSmite
 			
 			if(button3clicked) {
 				button3clicked = false;
-				
 				Frame.Client.DevTools.LogInfo();
 			}
 			

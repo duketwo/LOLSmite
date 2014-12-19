@@ -2,7 +2,10 @@
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using WhiteMagic;
+using SlimDX;
+using SlimDX.Direct3D9;
+using System.Diagnostics;
+using LOLSmiteModel;
 
 namespace D3DDetour
 {
@@ -15,7 +18,7 @@ namespace D3DDetour
 		private delegate int D3DCreateDevice(IntPtr instance, uint adapter, uint deviceType, IntPtr focusWindow, uint behaviorFlags, [In] ref D3D9.D3DPRESENT_PARAMETERS presentationParameters, out IntPtr returnedDeviceInterface);
 
 		private D3D9.D3DEndscene endSceneDelegate;
-	
+		
 		public IntPtr EndScenePointer = IntPtr.Zero;
 		public IntPtr ResetPointer = IntPtr.Zero;
 		public IntPtr ResetExPointer = IntPtr.Zero;
@@ -40,8 +43,8 @@ namespace D3DDetour
 			IntPtr device;
 			if (createDevice(iDirect3D9, 0u, 1u, form.Handle, 32u, ref d3dPresentParams, out device) < 0)
 			{
-				throw new Exception("Failed to create device."); 
-			} 
+				throw new Exception("Failed to create device.");
+			}
 			
 			this.EndScenePointer = Marshal.ReadIntPtr(Marshal.ReadIntPtr(device), D3D9Vtable.EndScene_Index*4);
 			
@@ -81,14 +84,31 @@ namespace D3DDetour
 
 		}
 		
+		private static System.Drawing.Font drawFont = new System.Drawing.Font("Verdena", 20.0f, System.Drawing.FontStyle.Bold);
+		private static Device device = null;
+		public static Font font = null;
+		
 		private int EndsceneDetour(IntPtr intptr_0)
 		{
+			if(device == null)
+				device = Device.FromPointer(intptr_0);
+			if(font == null)
+				font = new Font(device, drawFont);
+			
+		
+				foreach(KeyValuePair<int,LOLSmiteModel.D3DDrawString> kv in LOLSmiteModel.LOLClient.D3dDrawStringList){
+
+					font.DrawString(null, kv.Value.Text, kv.Value.X, kv.Value.Y, kv.Value.Color);
+
+				}
+			
+
 			base.RaiseEvent();
 			return (int)LOLSmiteModel.Memory.GetMagic.Detours["endscene"].CallOriginal(intptr_0);
 		}
 		public override void Remove()
 		{
-            LOLSmiteModel.Memory.GetMagic.Detours["endscene"].Dispose();
+			LOLSmiteModel.Memory.GetMagic.Detours["endscene"].Dispose();
 		}
 	}
 }

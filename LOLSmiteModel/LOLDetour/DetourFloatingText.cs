@@ -38,20 +38,20 @@ namespace LOLSmiteModel
 		{
 			
 			
+			
+			try {
 				
-				try {
-					
-					IntPtr floatingTextPointer = new IntPtr(Memory.LOLBaseAddress+Offsets.FloatingText);
-					FloatingTextDelegate = (FloatingText)Marshal.GetDelegateForFunctionPointer(floatingTextPointer, typeof(FloatingText));
-					
-					Memory.GetMagic.Detours.CreateAndApply(FloatingTextDelegate,new FloatingText(this.PrintChatDetour),"floatingText");
+				IntPtr floatingTextPointer = new IntPtr(Memory.LOLBaseAddress+Offsets.FloatingText);
+				FloatingTextDelegate = (FloatingText)Marshal.GetDelegateForFunctionPointer(floatingTextPointer, typeof(FloatingText));
+				
+				Memory.GetMagic.Detours.CreateAndApply(FloatingTextDelegate,new FloatingText(this.PrintChatDetour),"floatingText");
 
-					
-					
-				} catch (Exception ex) {
-					
-					Frame.Log(ex.ToString());
-				}
+				
+				
+			} catch (Exception ex) {
+				
+				Frame.Log(ex.ToString());
+			}
 			
 			
 		}
@@ -59,6 +59,15 @@ namespace LOLSmiteModel
 		private unsafe void PrintChatDetour(uint p1, uint p2, uint p3, uint p4, uint p5, uint p6)
 		{
 //			uint font = *(uint*)(0x21D4D2C);
+			// draw(FONT,Frame.Client.Me.BaseAddress,10(type?) ,0, ( VALUE ) ,0);
+			// FloatingTextType:
+			// 1 = + YELLOW TEXT
+			// 2 = + GREEN TEXT ()
+			// 3 = blue text
+			// 4 = blue text
+			// ...
+			// A =  + GOLD
+			// 
 			uint font = *(uint*)(0x2404D2C);
 			Frame.Log("Font ptr: " + font.ToString("X"));
 			

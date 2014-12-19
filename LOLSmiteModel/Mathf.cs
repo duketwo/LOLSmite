@@ -68,9 +68,9 @@ namespace LOLSmiteModel
 		[FieldOffset(0x0)]
 		public float X;
 		[FieldOffset(0x4)]
-		public float Y;
-		[FieldOffset(0x8)]
 		public float Z;
+		[FieldOffset(0x8)]
+		public float Y;
 		
 		public Vector3(float x, float y, float z){
 			this.X = x;

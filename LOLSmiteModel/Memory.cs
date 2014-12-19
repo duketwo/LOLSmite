@@ -52,9 +52,11 @@ namespace LOLSmiteModel
 			uint end = address + maxLength;
 			byte[] buffer = new byte[maxLength];
 			
+			int cnt = 0;
 			while(current < end) {
 				buffer[current-address] = *(byte*)current;
 				current++;
+				cnt++;
 			}
 			
 			string s = encoding.GetString(buffer);
@@ -63,10 +65,6 @@ namespace LOLSmiteModel
 			}
 
 			return s;
-		}
-		
-		public unsafe static string ReadString2(uint address, int len = 512){
-			return new string((char*)((void*)address), 0, len);
 		}
 		
 		/// <summary>

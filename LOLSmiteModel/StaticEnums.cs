@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Drawing;
 
 namespace LOLSmiteModel
 {
@@ -30,6 +31,21 @@ namespace LOLSmiteModel
 		Spawn_Barracks = 5,
 		Inhibitor = 1000,
 		Unknown = 0
+	}
+	
+	public struct D3DDrawString 
+	{
+		public string Text;
+		public int X;
+		public int Y;
+		public Color Color;
+		
+		public D3DDrawString(string text, int x, int y, Color color){
+			this.Text = text;
+			this.X = x;
+			this.Y = y;
+			this.Color = color;
+		}
 	}
 	
 	

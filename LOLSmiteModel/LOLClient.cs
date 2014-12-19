@@ -13,13 +13,19 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Linq;
 using System.Collections.Generic;
+using System.Collections;
 using System.Windows.Forms;
+using System.Drawing;
+
 
 namespace LOLSmiteModel
 {
 	/// <summary>
 	/// Description of LOLClient.
 	/// </summary>
+	/// 
+	
+
 	public class LOLClient : IDisposable
 	{
 		
@@ -27,6 +33,7 @@ namespace LOLSmiteModel
 		public LOLPlayer Me { get; set; }
 		public LOLDevTools DevTools { get; set; }
 		private static bool startUp;
+		private static ConcurrentDictionary<int,D3DDrawString> _D3dDrawStringList = new ConcurrentDictionary<int,D3DDrawString>();
 		
 		public LOLClient()
 		{
@@ -43,6 +50,14 @@ namespace LOLSmiteModel
 				startUp = true;
 				PrintToChat("<font color='#19D1CE'>LOLSmite loaded. by duketwo ( seviers@gmail.com )</font>");
 			}
+			
+			
+		}
+
+		public static ConcurrentDictionary<int, D3DDrawString> D3dDrawStringList {
+			get {
+				return _D3dDrawStringList;
+			}
 		}
 		
 		public ConcurrentBag<LOLObject> GetLOLObjects
@@ -55,6 +70,13 @@ namespace LOLSmiteModel
 			if(t == ObjectType.All)
 				return GetLOLObjects.Where( s => s.BaseAddress != Frame.Client.Me.BaseAddress).OrderBy(s => s.SqrMagnitude).Take(n);
 			return GetLOLObjects.Where( s => s.BaseAddress != Frame.Client.Me.BaseAddress && s.ObjectType == t ).OrderBy(s => s.SqrMagnitude).Take(n);
+		}
+		
+		public unsafe Vector3 ScreenCenterPositionWorld {
+			get {
+				return Memory.ReadStruct<Vector3>(((*(uint*)(*(uint*)(LOLSmiteModel.Memory.LOLBaseAddress+Offsets.HudManager))) + 0x104));
+
+			}
 		}
 		
 		private unsafe void PopulateLOLObjects()
@@ -111,44 +133,16 @@ namespace LOLSmiteModel
 				
 			} catch (Exception ex)
 			{
-				Frame.Log(ex.ToString());
+				Frame.Log(ex.StackTrace);
 				
 			}
 		}
 		
-		public unsafe void DrawFloatingText(LOLObject obj, string text, uint type = 0)
+		public unsafe float GameClockTime
 		{
-			
-			try
-			{
-				using (var s = new StructWrapper<string>(text)){
-					
-					//var draw = (DetourFloatingText.FloatingText)Marshal.GetDelegateForFunctionPointer(new IntPtr(Memory.LOLBaseAddress+Offsets.FloatingText), typeof(DetourFloatingText.FloatingText));
-					
-//					uint printArg = *(uint*)(0x21D4D2C);
-//					uint printArg = *(uint*)(0x2404D2C);
-//					uint printArg = *(uint*)(0x2674D2C); // was fine
-					uint printArg = *(uint*)(Memory.LOLBaseAddress+0x300267C);
-					
-					// draw(FONT,Frame.Client.Me.BaseAddress,10(type?) ,0, ( VALUE ) ,0);
-					// 1 = + YELLOW TEXT
-					// 2 = + GREEN TEXT ( prob health )
-					// 3 = blue text
-					// 4 = blue text
-					// 5 = 
-					// 10 =  + GOLD
-					// 
-					
-					// draw(printArg,Frame.Client.Me.BaseAddress,type,0,0,0);
-				}
-				
-			} catch (Exception ex)
-			{
-				Frame.Log(ex.ToString());
-				
-			}
-			
+			get { return ( *(float*) ((*(uint*)(LOLSmiteModel.Memory.LOLBaseAddress+Offsets.GameClock))+0x2C)); }
 		}
+	
 		
 		
 		public int GetLOLObjectAmount()

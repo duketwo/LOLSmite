@@ -48,6 +48,9 @@
     <Reference Include="Microsoft.CSharp">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="SlimDX">
+      <HintPath>..\Libs\SlimDX.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -89,13 +92,11 @@
     <Compile Include="Memory.cs" />
     <Compile Include="Offsets.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SigScan.cs" />
     <Compile Include="StaticEnums.cs" />
     <Compile Include="StructWrapper.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="D3DDetour" />
-    <Folder Include="LOLDetour" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\WhiteMagic\WhiteMagic.csproj">
       <Project>{5721FBA5-FE77-4727-8BFE-13CD23ECE36E}</Project>
