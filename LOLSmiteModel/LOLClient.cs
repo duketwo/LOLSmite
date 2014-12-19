@@ -48,7 +48,7 @@ namespace LOLSmiteModel
 		{
 			if(!startUp) {
 				startUp = true;
-				//PrintToChat("<font color='#19D1CE'>LOLSmite loaded. by duketwo ( seviers@gmail.com )</font>");
+				PrintToChat("<font color='#19D1CE'>LOLSmite loaded. by duketwo ( seviers@gmail.com )</font>");
 			}
 			
 			
@@ -130,10 +130,11 @@ namespace LOLSmiteModel
 			{
 				using (var s = new StructWrapper<string>(text)){
 					var chat = (PrintChat)Marshal.GetDelegateForFunctionPointer(new IntPtr(Memory.LOLBaseAddress+Offsets.PrintChat), typeof(PrintChat));
-					uint printArg = *(uint*)(Memory.LOLBaseAddress+0x300267C);
+					uint printArg = Memory.Read<uint>((Memory.LOLBaseAddress+0x2FC672C));
+
 					chat(printArg,s.Ptr,type);
 				}
-				
+				 
 			} catch (Exception ex)
 			{
 				Frame.Log(ex.StackTrace);

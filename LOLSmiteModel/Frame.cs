@@ -41,7 +41,7 @@ namespace LOLSmiteModel
             D3DHook.OnFrame += new EventHandler(OnD3DFrame);
 
             hookManager = new LOLHookManager();
-            hookManager.AddController(new DetourPrintChat());
+            //hookManager.AddController(new DetourPrintChat());
             //hookManager.AddController(new DetourCastSpell());
             //hookManager.AddController(new DetourViewPort());
             //hookManager.AddController(new DetourFloatingText());

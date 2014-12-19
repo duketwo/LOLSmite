@@ -119,6 +119,12 @@ namespace LOLSmiteModel
                 Frame.Log("Player: " + obj.Name);
             }
 
+            Frame.Log("(LOLSmiteModel.Memory.LOLBaseAddress + Offsets.CastSpell).ToString(X): " + (LOLSmiteModel.Memory.LOLBaseAddress + Offsets.CastSpell).ToString("X"));
+            Frame.Log("(LOLSmiteModel.Memory.LOLBaseAddress + Offsets.PrintChat).ToString(X): " + (LOLSmiteModel.Memory.LOLBaseAddress + Offsets.PrintChat).ToString("X"));
+            Frame.Log("(LOLSmiteModel.Memory.LOLBaseAddress + Offsets.MoveTo).ToString(X): " + (LOLSmiteModel.Memory.LOLBaseAddress + Offsets.MoveTo).ToString("X"));
+            Frame.Log("(LOLSmiteModel.Memory.LOLBaseAddress + Offsets.ViewPort).ToString(X): " + (LOLSmiteModel.Memory.LOLBaseAddress + Offsets.ViewPort).ToString("X"));
+			
+
 
             Frame.Log("Frame.Client.Me.SpellQ.IsReady: " + Frame.Client.Me.SpellQ.IsReady);
             Frame.Log("Frame.Client.Me.SpellW.IsReady: " + Frame.Client.Me.SpellW.IsReady);
@@ -129,14 +135,10 @@ namespace LOLSmiteModel
             Frame.Log("Frame.Client.Me.Summoner2.IsReady: " + Frame.Client.Me.Summoner2.IsReady);
 
 
-            Frame.Log("Frame.Client.Me.Summoner2.IsReady: " + Frame.Client.Me.Summoner1.BaseAddress.ToString("X"));
+            Frame.Log("Frame.Client.Me.Summoner1.BaseAddress.ToString(X) " + Frame.Client.Me.Summoner1.BaseAddress.ToString("X"));
 
 
-            Frame.Log("(LOLSmiteModel.Memory.LOLBaseAddress + Offsets.CastSpell).ToString(X): " + (LOLSmiteModel.Memory.LOLBaseAddress + Offsets.CastSpell).ToString("X"));
-            Frame.Log("(LOLSmiteModel.Memory.LOLBaseAddress + Offsets.PrintChat).ToString(X): " + (LOLSmiteModel.Memory.LOLBaseAddress + Offsets.PrintChat).ToString("X"));
-            Frame.Log("(LOLSmiteModel.Memory.LOLBaseAddress + Offsets.MoveTo).ToString(X): " + (LOLSmiteModel.Memory.LOLBaseAddress + Offsets.MoveTo).ToString("X"));
-            Frame.Log("(LOLSmiteModel.Memory.LOLBaseAddress + Offsets.ViewPort).ToString(X): " + (LOLSmiteModel.Memory.LOLBaseAddress + Offsets.ViewPort).ToString("X"));
-			
+            
 			
 			
 		}

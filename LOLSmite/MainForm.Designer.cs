@@ -49,20 +49,20 @@ namespace LOLSmite
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button5 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.button5 = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(267, 218);
+            this.button1.Location = new System.Drawing.Point(322, 268);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(126, 26);
             this.button1.TabIndex = 0;
@@ -149,6 +149,16 @@ namespace LOLSmite
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Sig Scanner";
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(112, 125);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(678, 26);
+            this.button5.TabIndex = 13;
+            this.button5.Text = "Print current Signatures";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -200,16 +210,6 @@ namespace LOLSmite
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(678, 20);
             this.textBox2.TabIndex = 8;
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(112, 125);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(678, 26);
-            this.button5.TabIndex = 13;
-            this.button5.Text = "Print current Signatures";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // MainForm
             // 

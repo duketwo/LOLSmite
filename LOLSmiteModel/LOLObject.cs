@@ -87,8 +87,9 @@ namespace LOLSmiteModel
 		{
 			get
 			{
-				return *(int*)(BaseAddress + Offsets.NameLength) > 15 ? Memory.ReadString(*(uint*)(BaseAddress + Offsets.Name), Encoding.UTF8, 30) :
-					Memory.ReadString(BaseAddress + Offsets.Name, Encoding.UTF8, 15);
+                uint length = *(uint*)(BaseAddress + Offsets.NameLength);
+                return length > 15 ? Memory.ReadString(*(uint*)(BaseAddress + Offsets.Name), Encoding.UTF8, length) :
+                    Memory.ReadString(BaseAddress + Offsets.Name, Encoding.UTF8, length);
 			}
 		}
 		

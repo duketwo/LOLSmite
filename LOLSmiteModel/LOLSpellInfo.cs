@@ -35,9 +35,9 @@ namespace LOLSmiteModel
 		
 		public unsafe string Name {
 			get {
-				//return Memory.ReadString( *(uint*)(BaseAddress+Offsets.SpellName)+0x18,Encoding.UTF8,5);
-				return Encoding.UTF8.GetString(Memory.GetMagic.ReadBytes(*(uint*)(BaseAddress+Offsets.SpellName)+0x18,35));
-			
+                uint length = *(uint*)(*(uint*)(BaseAddress + Offsets.SpellName) + 0x28);
+                return length > 15 ? Memory.ReadString(*(uint*)(*(uint*)(BaseAddress + Offsets.SpellName) + 0x18), Encoding.UTF8, length) :
+                    Memory.ReadString((*(uint*)(BaseAddress + Offsets.SpellName))+0x18, Encoding.UTF8, length);
 			}
 		}
 		

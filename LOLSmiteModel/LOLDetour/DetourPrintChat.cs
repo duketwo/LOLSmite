@@ -50,13 +50,13 @@ namespace LOLSmiteModel
 		
 		private unsafe void PrintChatDetour(uint p1 ,uint p2, uint p3)
 		{
-			uint font = *(uint*)(Memory.LOLBaseAddress+0x300267C);
+			//uint font = *(uint*)(Memory.LOLBaseAddress+0x300267C);
 			
-			char* stringPointer = (char*) Marshal.StringToHGlobalAnsi("hello managed world.").ToPointer();
+			//char* stringPointer = (char*) Marshal.StringToHGlobalAnsi("hello managed world.").ToPointer();
 			
 			Frame.Log("p1: " + p1.ToString("X") + " p2: " + p2.ToString("X") + " p3: "  + p3.ToString("X"));
-			
-			Memory.GetMagic.Detours["printChat"].CallOriginal(p1,(uint)stringPointer,4);
+
+            Memory.GetMagic.Detours["printChat"].CallOriginal(p1, p2, p3);
 			
 		}
 		

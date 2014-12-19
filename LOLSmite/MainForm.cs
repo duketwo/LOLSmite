@@ -55,6 +55,7 @@ namespace LOLSmite
 			
 			if(button1clicked) {
                 button1clicked = false;
+                Frame.Client.PrintToChat("test");
 			}
 			
 			if(button2clicked) {
@@ -100,7 +101,7 @@ namespace LOLSmite
                 if (logbox.Items.Count > 1)
                 {
                     logbox.SelectedIndex = logbox.Items.Count - 1;
-                    logbox.ClearSelected();
+                    logbox.ClearSelected(); 
                 }
 
             }
