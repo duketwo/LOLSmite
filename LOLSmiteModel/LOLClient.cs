@@ -48,7 +48,7 @@ namespace LOLSmiteModel
 		{
 			if(!startUp) {
 				startUp = true;
-				PrintToChat("<font color='#19D1CE'>LOLSmite loaded. by duketwo ( seviers@gmail.com )</font>");
+				PrintToChat("<font color='#19D1CE'>LOLSmite loaded. by duketwo ( duketwoqq@gmail.com )</font>");
 			}
 			
 			

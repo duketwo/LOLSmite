@@ -224,7 +224,7 @@ namespace LOLSmite
             this.Controls.Add(this.button1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
-            this.Text = "LOLSmite - by duketwo ( seviers@gmail.com )";
+            this.Text = "LOLSmite - by duketwo ( duketwoqq@gmail.com )";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainFormFormClosed);
             this.Load += new System.EventHandler(this.MainFormLoad);
             this.contextMenuStrip1.ResumeLayout(false);
